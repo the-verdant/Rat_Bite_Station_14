@@ -28,6 +28,7 @@
     whitelist:
       components:
       - Temperature
+      - Cookware # Ratbite edit
   - type: PlaceableSurface
   - type: Machine
     board: ElectricGrillMachineCircuitboard

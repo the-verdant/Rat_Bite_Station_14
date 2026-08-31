@@ -7,6 +7,8 @@ using Content.Shared.Chemistry;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Placeable;
 using Content.Shared.Power;
+using Content.Shared.Tag;
+using Robust.Shared.Prototypes; // ratbite edit
 
 namespace Content.Server.Chemistry.EntitySystems;
 
@@ -15,6 +17,9 @@ public sealed class SolutionHeaterSystem : EntitySystem
     [Dependency] private readonly PowerReceiverSystem _powerReceiver = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
+    [Dependency] private readonly TagSystem _tag = default!; // begin ratbite edit
+
+    private static readonly ProtoId<TagPrototype> SolutionHeaterBlacklistTag = "SolutionHeaterBlacklist"; // end ratbite edit
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -85,6 +90,9 @@ public sealed class SolutionHeaterSystem : EntitySystem
             foreach (var heatingEntity in placer.PlacedEntities)
             {
                 if (!TryComp<SolutionContainerManagerComponent>(heatingEntity, out var container))
+                    continue;
+
+                if (_tag.HasTag(heatingEntity, SolutionHeaterBlacklistTag)) // ratbite edit
                     continue;
 
                 var energy = heater.HeatPerSecond * frameTime;

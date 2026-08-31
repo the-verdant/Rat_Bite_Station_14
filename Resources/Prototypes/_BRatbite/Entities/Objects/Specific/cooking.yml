@@ -1,0 +1,103 @@
+﻿- type: entity
+  abstract: true
+  id: BaseCookingPot
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: _BRatBites/Objects/Specific/Cooking/CookingPot.rsi
+    layers:
+    - state: icon
+  - type: Item
+    size: Normal
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 50
+  - type: RefillableSolution
+    solution: beaker
+  - type: DrainableSolution
+    solution: beaker
+  - type: ExaminableSolution
+    solution: beaker
+    exactVolume: true
+  - type: DrawableSolution
+    solution: beaker
+  - type: InjectableSolution
+    solution: beaker
+  - type: SolutionTransfer
+    canChangeTransferAmount: true
+    maxTransferAmount: 50
+  - type: Spillable
+    solution: beaker
+  - type: UserInterface
+    interfaces:
+      enum.TransferAmountUiKey.Key:
+        type: TransferAmountBoundUserInterface
+      enum.CookwareUiKey.Key:
+        type: CookwareBoundUserInterface
+  - type: Appearance
+  - type: Edible
+    edible: Drink
+    solution: beaker
+    destroyOnEmpty: false
+    utensil: None
+    grid:
+    - 0,0,1,1
+    maxItemSize: Normal
+  - type: ContainerContainer
+    containers:
+      cookware_entity_container: !type:Container
+  - type: AutomationSlots # Goobstation
+    slots:
+    - !type:AutomatedContainer
+      input: AutomationSlotInput
+      output: AutomationSlotInput
+      containerId: cookware_entity_container
+      maxItems: 10 # have to manually keep it in sync with capacity on Microwave at the top
+  - type: Cookware
+    capacity: 10
+  - type: ActivatableUI
+    key: enum.CookwareUiKey.Key
+  - type: Tag
+    tags:
+    - SolutionHeaterBlacklist
+
+- type: entity
+  id: CookingPotSmall
+  name: small pot
+  description: "A small pot used for cooking.\nThis one doesn't squeak."
+  parent: BaseCookingPot
+  components:
+  - type: Item
+    size: Small
+
+
+- type: entity
+  id: CookingPotMedium
+  name: sauce pan
+  description: "A somewhat large pot also used for cooking.\nContrary to popular belief, you can cook more than sauce with it."
+  parent: BaseCookingPot
+  components:
+  - type: Item
+    size: Normal
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 100
+  - type: SolutionTransfer
+    maxTransferAmount: 100
+
+- type: entity
+  id: CookingPotLarge
+  name: boiling pot
+  description: "A substantially large pot used for cooking.\nThe pot itself isn't actually boiling."
+  parent: BaseCookingPot
+  components:
+  - type: Item
+    size: Huge
+  - type: SolutionContainerManager
+    solutions:
+      beaker:
+        maxVol: 200
+  - type: SolutionTransfer
+    maxTransferAmount: 200
